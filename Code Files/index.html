@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,600" rel="stylesheet" type="text/css">
+        
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+        
+        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+        
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+        
+        <script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function dragstart_handler(ev) {
+  // Set the drag effect to copy
+  ev.dataTransfer.dropEffect = "copy";
+}
+`function drag(ev) {
+    ev.dataTransfer.setData("text/html", ev.target.id);
+}`
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text/html");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>
+        
+        
+        <title>Q</title>
+    </head>
+    <body>
+        
+        <div class="top">
+          <h1 id="appName">Q</h1>
+        </div>
+        
+        
+        
+        <div class="entryBlock container-fluid style-5">
+            <div class="row">
+            <div class="numEntry style-5 col-sm-1 col-centered">
+              <label  class="taskNum" for="taskNum">#</label>
+               <input class="taskNum" type="tel" maxLength="5" name="taskNum"  placeholder="-----"/>
+            </div>
+            <div class="typeEntry  col-sm-2">
+              <label for="typeName">Job Type</label>
+              <input list="typeName" name="typeName" class="style-1">
+              <datalist id="typeName">
+                  <option value="Enter Job Type" disabled selected>
+                  <option value="News Ad">
+                  <option value="News Insert">
+                  <option value="Flyer">
+                  <option value="Direct Mail">
+                  <option value="Web Ad">
+                </datalist>
+            </div>
+            <div class="memberEntry col-sm-2">
+                <label for="memberName">Member</label>
+                <input list="member" name="memberName">
+                <datalist id="member">
+                    <option value="Amdahl">
+                    <option value="McCarty">
+                    <option value="DeWhitt">
+                    <option value="Jonas">
+                    <option value="Safari">
+                </datalist>
+            </div>
+            <div class="taskEntry col-sm-2">
+                <label for="taskName">Task Name</label>
+                <input list="taskName" name="taskName">
+                <datalist id="taskName">
+                    <option value="Design First Draft">
+                    <option value="Finalize File">
+                    <option value="Internal Changes">
+                    <option value="Member Changes">
+                    <option value="Minor Member Changes">
+                </datalist>
+            </div>
+                <div class="statusEntry col-sm-2">
+                <label for="statusName">Status</label>
+                <input list="statusName" name="statusName">
+                <datalist name="statusName" id="statusName">
+                    <option value="Normal" selected>
+                    <option value="HOT" >
+                    <option value="RUSH" >
+                </datalist>
+            </div>
+            <div class="dateEntry col-sm-2">
+                <label for="dateName">Due</label>
+                <input type="text" class="dateField" id="datepicker" name="dateName">
+            </div>
+            <div class=" col-sm-1">
+                <button type="button" class="submitEntry btn btn-outline-primary"> + </button>
+            </div>
+            </div>
+        </div>
+       
+        <div class="queueList container-fluid table-responsive">
+            <table class="table table-striped">
+               <thead>
+                   <tr>
+                       <th>
+                        
+                    </th>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Job Type
+                    </th>
+                    <th>
+                        Member
+                    </th>
+                    <th>
+                        Task Name
+                    </th>
+                    <th>
+                        Job Status
+                    </th>
+                    <th>
+                        Due
+                    </th>
+                       <th>
+                        
+                    </th>
+                </tr>
+                   </thead>
+                <tbody>
+                    <tr id="%%task%%" class="normal">
+                        <td><span class="glyphicon glyphicon-option-vertical"></span></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr>
+                    <tr id="%%task%%" class="normal">
+                        <td><span class="glyphicon glyphicon-option-vertical"></span></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr> <tr id="%%task%%" class="normal">
+                        <td><span class="glyphicon glyphicon-option-vertical"></span></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr> <tr id="%%task%%" class="normal">
+                        <td><span class="glyphicon glyphicon-option-vertical"></span></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr> <tr id="%%task%%" class="rush">
+                        <td><strong>RUSH</strong></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr> <tr id="%%task%%" class="hot">
+                        <td><strong>HOT</strong></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr> <tr id="drag1" draggable="true" ondragstart="drag(event)" class="completed">
+                        <td ><span class="glyphicon glyphicon-option-vertical"></span></td>
+                        <td>12345</td>
+                        <td>News Insert</td>
+                        <td>McBaine</td>
+                        <td>Minor Member Changes</td>
+                        <td>---</td>
+                        <td>02/21/2017</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr>
+                   </tbody>
+                
+            </table>
+             <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" height="100">
+            <span>Hey</span></div>                
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>
