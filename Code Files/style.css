@@ -153,6 +153,13 @@ tr.normal td:first-child:hover, tr.normal td:last-child:hover{
     opacity:  1 !important;
 }
 
+/* normal when clicked */
+tr.normal:active td, tr.normal:active td:first-child, tr.normal:active td:last-child {
+    color: #fff;
+    background-color: #FAAE5A;
+    opacity: 1 !important;
+}
+
 /* TD rounded ends on each side of rows */
 tr td:last-child {
     border-radius: 0px 50px 50px 0px;
@@ -188,6 +195,13 @@ tr.hot td, tr.hot td:first-child, tr.hot:last-child {
 
 }
 
+/* HOT when clicked */
+tr.hot:active td, tr.hot:active td:first-child, tr.hot:active td:last-child {
+    color: #fff;
+    background-color: #FAAE5A;
+}
+
+
 /* RUSH Css Stylings */
 tr.rush:hover {
     box-shadow: inset 0px 0px 0px 1px  #0093D2;
@@ -205,8 +219,31 @@ tr.rush td, tr.rush td:first-child, tr.rush:last-child {
     color: #0093D2;
 }
 
+/* RUSH when clicked */
+tr.rush:active td, tr.rush:active td:first-child, tr.rush:active td:last-child {
+    color: #fff;
+    background-color: #FAAE5A;
+}
+
 /* Completed */
 tr.completed td, tr.completed td:first-child, tr.completed:last-child {
     color: #fff;
     background-color: #57C1AF;
+}
+
+/* class when dragged */
+.drag, .table tr.drag td, .table tr.drag td:first-child, .table tr.drag td:last-child {
+    color: #fff !important;
+    background-color: #FAAE5A !important;
+    opacity: 1 !important;
+}
+
+
+td:first-child span {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

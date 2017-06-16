@@ -9,12 +9,13 @@
         <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
         
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
+        
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link type="text/css" rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js"></script>
         <script>
   $( function() {
     $( "#datepicker" ).datepicker();
@@ -26,21 +27,39 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
-function dragstart_handler(ev) {
-  // Set the drag effect to copy
-  ev.dataTransfer.dropEffect = "copy";
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
 }
-`function drag(ev) {
-    ev.dataTransfer.setData("text/html", ev.target.id);
-}`
 
 function drop(ev) {
     ev.preventDefault();
-    var data = ev.dataTransfer.getData("text/html");
+    var data = ev.dataTransfer.getData("text");
     ev.target.appendChild(document.getElementById(data));
 }
 </script>
         
+<script>
+        $(document).ready(function() {
+
+	
+	// Initialise the second table specifying a dragClass and an onDrop function that will display an alert
+	$("#queueList1").tableDnD({
+		onDragClass: "drag",
+		onDrop: function(table, row) {
+			var rows = table.tBodies[0].rows;
+			var debugStr = "Row dropped was "+row.id+". New order: ";
+			for (var i=0; i<rows.length; i++) {
+				debugStr += rows[i].id+" ";
+			}
+			$(table).parent().find('.result').text(debugStr);
+            console.log(row.attr);
+		},
+		onDragStart: function(table, row) {
+			$(table).parent().find('.result').text("Started dragging row "+row.id);
+		}
+	});
+});
+   </script>     
         
         <title>Q</title>
     </head>
@@ -112,7 +131,7 @@ function drop(ev) {
         </div>
        
         <div class="queueList container-fluid table-responsive">
-            <table class="table table-striped">
+            <table id="queueList1" class="table table-striped">
                <thead>
                    <tr>
                        <th>
@@ -142,6 +161,18 @@ function drop(ev) {
                 </tr>
                    </thead>
                 <tbody>
+                     <!--
+                     <tr id="%%task%%" class="normal">
+                        <td><span class="glyphicon glyphicon-option-vertical"></span></td>
+                        <td>%%num%%</td>
+                        <td>%%jobType%%</td>
+                        <td>%%member%%</td>
+                        <td>%%taksName%%</td>
+                        <td>%%status%%</td>
+                        <td>%%date%%</td>
+                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                    </tr>
+                    -->
                     <tr id="%%task%%" class="normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
@@ -185,20 +216,20 @@ function drop(ev) {
                         <td>News Insert</td>
                         <td>McBaine</td>
                         <td>Minor Member Changes</td>
-                        <td>---</td>
+                        <td>RUSH</td>
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
-                    </tr> <tr id="%%task%%" class="hot">
+                    </tr> <tr class="hot" >
                         <td><strong>HOT</strong></td>
                         <td>12345</td>
                         <td>News Insert</td>
                         <td>McBaine</td>
                         <td>Minor Member Changes</td>
-                        <td>---</td>
+                        <td>HOT</td>
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
-                    </tr> <tr id="drag1" draggable="true" ondragstart="drag(event)" class="completed">
-                        <td ><span class="glyphicon glyphicon-option-vertical"></span></td>
+                    </tr> <tr class="completed">
+                        <td ><span class="glyphicon glyphicon-option-vertical unselectable"></span></td>
                         <td>12345</td>
                         <td>News Insert</td>
                         <td>McBaine</td>
@@ -210,8 +241,7 @@ function drop(ev) {
                    </tbody>
                 
             </table>
-             <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" height="100">
-            <span>Hey</span></div>                
+             
         </div>
         <script src="app.js"></script>
     </body>
