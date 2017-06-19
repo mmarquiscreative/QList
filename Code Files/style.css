@@ -114,11 +114,11 @@ outline: none;
     color: #5B5B5B;
 }
 
-.table tr.normal:hover{
+.table tr.Normal:hover{
     border-radius: 50px;
     box-shadow: inset 0px 0px 0px 1px #FAAE5A;
 }
-.table tr.normal td, .table tr.hot td, .table tr.rush td, .table tr.completed td {
+.table tr.Normal td, .table tr.HOT td, .table tr.RUSH td, .table tr.completed td {
     padding: 15px;
     z-index: 1 ;
     position: relative;
@@ -135,26 +135,26 @@ tr td:nth-child(2){
 }
 
 
-.table tr.normal td:first-child, .table tr.normal td:last-child {
-    font-weight: normal;
+.table tr.Normal td:first-child, .table tr.Normal td:last-child {
+    font-weight: Normal;
     color: #FAAE5A;
     border: solid 0px #fff ;
 }
 
 /* Disappearing/reappearing end icons */
-.table tr.normal td:first-child, tr.normal td:last-child {
+.table tr.Normal td:first-child, tr.Normal td:last-child {
         opacity: 0;
 }
 
-tr.normal:hover td:first-child, tr.normal:hover td:last-child{
+tr.Normal:hover td:first-child, tr.Normal:hover td:last-child{
     opacity:  .6 !important;
 }
-tr.normal td:first-child:hover, tr.normal td:last-child:hover{
+tr.Normal td:first-child:hover, tr.Normal td:last-child:hover{
     opacity:  1 !important;
 }
 
-/* normal when clicked */
-tr.normal:active td, tr.normal:active td:first-child, tr.normal:active td:last-child {
+/* Normal when clicked */
+tr.Normal:active td, tr.Normal:active td:first-child, tr.Normal:active td:last-child {
     color: #fff;
     background-color: #FAAE5A;
     opacity: 1 !important;
@@ -174,53 +174,53 @@ tr td:first-child {
     font-size: 18px;
 }
 /* HOT Css Stylings */
-tr.hot:hover {
+tr.HOT:hover {
     box-shadow: inset 0px 0px 0px 1px #F16354;
 }
 
-tr.hot td:last-child {
+tr.HOT td:last-child {
     opacity: 0;
 }
 
-tr.hot td:last-child {
+tr.HOT td:last-child {
     color: #F16354;
 }
 
-tr.hot:hover td:first-child, tr.hot:hover td:last-child {
+tr.HOT:hover td:first-child, tr.HOT:hover td:last-child {
     opacity: 1;
 }
 
-tr.hot td, tr.hot td:first-child, tr.hot:last-child {
+tr.HOT td, tr.HOT td:first-child, tr.HOT:last-child {
     color: #F16354;
 
 }
 
 /* HOT when clicked */
-tr.hot:active td, tr.hot:active td:first-child, tr.hot:active td:last-child {
+tr.HOT:active td, tr.HOT:active td:first-child, tr.HOT:active td:last-child {
     color: #fff;
     background-color: #FAAE5A;
 }
 
 
 /* RUSH Css Stylings */
-tr.rush:hover {
+tr.RUSH:hover {
     box-shadow: inset 0px 0px 0px 1px  #0093D2;
 }
 
-tr.rush td:last-child {
+tr.RUSH td:last-child {
     opacity: 0;
 }
 
- tr.rush:hover td:last-child {
+ tr.RUSH:hover td:last-child {
     opacity: 1;
 }
 
-tr.rush td, tr.rush td:first-child, tr.rush:last-child {
+tr.RUSH td, tr.RUSH td:first-child, tr.RUSH:last-child {
     color: #0093D2;
 }
 
 /* RUSH when clicked */
-tr.rush:active td, tr.rush:active td:first-child, tr.rush:active td:last-child {
+tr.RUSH:active td, tr.RUSH:active td:first-child, tr.RUSH:active td:last-child {
     color: #fff;
     background-color: #FAAE5A;
 }

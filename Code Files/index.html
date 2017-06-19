@@ -22,45 +22,7 @@
   } );
   </script>
         
-        <script>
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-}
-</script>
-        
-<script>
-        $(document).ready(function() {
-
-	
-	// Initialise the second table specifying a dragClass and an onDrop function that will display an alert
-	$("#queueList1").tableDnD({
-		onDragClass: "drag",
-		onDrop: function(table, row) {
-			var rows = table.tBodies[0].rows;
-			var debugStr = "Row dropped was "+row.id+". New order: ";
-			for (var i=0; i<rows.length; i++) {
-				debugStr += rows[i].id+" ";
-			}
-			$(table).parent().find('.result').text(debugStr);
-            console.log(row.attr);
-		},
-		onDragStart: function(table, row) {
-			$(table).parent().find('.result').text("Started dragging row "+row.id);
-		}
-	});
-});
-   </script>     
-        
+       
         <title>Q</title>
     </head>
     <body>
@@ -75,11 +37,11 @@ function drop(ev) {
             <div class="row">
             <div class="numEntry style-5 col-sm-1 col-centered">
               <label  class="taskNum" for="taskNum">#</label>
-               <input class="taskNum" type="tel" maxLength="5" name="taskNum"  placeholder="-----"/>
+               <input id="taskNumValue"class="taskNum inputField" type="tel" maxLength="5" name="taskNum"  placeholder="-----"/>
             </div>
             <div class="typeEntry  col-sm-2">
               <label for="typeName">Job Type</label>
-              <input list="typeName" name="typeName" class="style-1">
+              <input list="typeName" name="typeName" id="typeNameValue" class="style-1 inputField">
               <datalist id="typeName">
                   <option value="Enter Job Type" disabled selected>
                   <option value="News Ad">
@@ -91,7 +53,7 @@ function drop(ev) {
             </div>
             <div class="memberEntry col-sm-2">
                 <label for="memberName">Member</label>
-                <input list="member" name="memberName">
+                <input list="member" name="memberName" id="memberValue" class="inputField">
                 <datalist id="member">
                     <option value="Amdahl">
                     <option value="McCarty">
@@ -102,7 +64,7 @@ function drop(ev) {
             </div>
             <div class="taskEntry col-sm-2">
                 <label for="taskName">Task Name</label>
-                <input list="taskName" name="taskName">
+                <input list="taskName" name="taskName" id="taskNameValue" class="inputField">
                 <datalist id="taskName">
                     <option value="Design First Draft">
                     <option value="Finalize File">
@@ -113,7 +75,7 @@ function drop(ev) {
             </div>
                 <div class="statusEntry col-sm-2">
                 <label for="statusName">Status</label>
-                <input list="statusName" name="statusName">
+                <input list="statusName" name="statusName" id="statusValue" class="inputField">
                 <datalist name="statusName" id="statusName">
                     <option value="Normal" selected>
                     <option value="HOT" >
@@ -122,7 +84,7 @@ function drop(ev) {
             </div>
             <div class="dateEntry col-sm-2">
                 <label for="dateName">Due</label>
-                <input type="text" class="dateField" id="datepicker" name="dateName">
+                <input type="text" class="dateField inputField" id="datepicker" name="dateName" class="inputField">
             </div>
             <div class=" col-sm-1">
                 <button type="button" class="submitEntry btn btn-outline-primary"> + </button>
@@ -160,7 +122,7 @@ function drop(ev) {
                     </th>
                 </tr>
                    </thead>
-                <tbody>
+                <tbody id="queueContainer">
                      <!--
                      <tr id="%%task%%" class="normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
@@ -173,7 +135,7 @@ function drop(ev) {
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr>
                     -->
-                    <tr id="%%task%%" class="normal">
+                    <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
                         <td>News Insert</td>
@@ -183,7 +145,7 @@ function drop(ev) {
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr>
-                    <tr id="%%task%%" class="normal">
+                    <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
                         <td>News Insert</td>
@@ -192,7 +154,7 @@ function drop(ev) {
                         <td>---</td>
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
-                    </tr> <tr id="%%task%%" class="normal">
+                    </tr> <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
                         <td>News Insert</td>
@@ -201,7 +163,7 @@ function drop(ev) {
                         <td>---</td>
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
-                    </tr> <tr id="%%task%%" class="normal">
+                    </tr> <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
                         <td>News Insert</td>
@@ -210,7 +172,7 @@ function drop(ev) {
                         <td>---</td>
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
-                    </tr> <tr id="%%task%%" class="rush">
+                    </tr> <tr id="%%task%%" class="RUSH">
                         <td><strong>RUSH</strong></td>
                         <td>12345</td>
                         <td>News Insert</td>
@@ -219,7 +181,7 @@ function drop(ev) {
                         <td>RUSH</td>
                         <td>02/21/2017</td>
                         <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
-                    </tr> <tr class="hot" >
+                    </tr> <tr class="HOT" >
                         <td><strong>HOT</strong></td>
                         <td>12345</td>
                         <td>News Insert</td>
@@ -244,5 +206,13 @@ function drop(ev) {
              
         </div>
         <script src="app.js"></script>
+         <script>
+
+</script>
+        
+<script>
+        
+   </script>     
+        
     </body>
 </html>
