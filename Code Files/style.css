@@ -58,7 +58,9 @@ outline: none;
     text-align: center;
 
     }
-
+#taskNumValue {
+    min-width:50px;
+}
 .submitEntry {
     border-radius: 100%;
     color: #Fff;
@@ -156,10 +158,14 @@ tr.Normal td:first-child:hover, tr.Normal td:last-child:hover{
 /* Normal when clicked */
 tr.Normal:active td, tr.Normal:active td:first-child, tr.Normal:active td:last-child {
     color: #fff;
-    background-color: #FAAE5A;
+    background-color: #57C1AF;
     opacity: 1 !important;
 }
 
+tr.Normal:active {
+    box-shadow: 1px 1px 3px #444444;
+    z-index: 101 !important;
+}
 /* TD rounded ends on each side of rows */
 tr td:last-child {
     border-radius: 0px 50px 50px 0px;
@@ -198,9 +204,14 @@ tr.HOT td, tr.HOT td:first-child, tr.HOT:last-child {
 /* HOT when clicked */
 tr.HOT:active td, tr.HOT:active td:first-child, tr.HOT:active td:last-child {
     color: #fff;
-    background-color: #FAAE5A;
+    background-color: #57C1AF;
+    
 }
 
+tr.HOT:active    {
+    box-shadow: 1px 1px 3px #444444;
+    z-index: 101 !important;
+}
 
 /* RUSH Css Stylings */
 tr.RUSH:hover {
@@ -219,10 +230,15 @@ tr.RUSH td, tr.RUSH td:first-child, tr.RUSH:last-child {
     color: #0093D2;
 }
 
+tr.RUSH:active {
+    box-shadow: 1px 1px 3px #444444;
+    z-index: 101 !important;
+}
+
 /* RUSH when clicked */
 tr.RUSH:active td, tr.RUSH:active td:first-child, tr.RUSH:active td:last-child {
     color: #fff;
-    background-color: #FAAE5A;
+    background-color: #57C1AF;
 }
 
 /* Completed */
@@ -232,12 +248,16 @@ tr.completed td, tr.completed td:first-child, tr.completed:last-child {
 }
 
 /* class when dragged */
-.drag, .table tr.drag td, .table tr.drag td:first-child, .table tr.drag td:last-child {
-    color: #fff !important;
-    background-color: #FAAE5A !important;
-    opacity: 1 !important;
+.drag {
+    box-shadow: 1px 1px 3px #444444;
+    z-index: 101 !important;
 }
 
+.drag, .table tr.drag td, .table tr.drag td:first-child, .table tr.drag td:last-child {
+    color: #fff !important;
+    background-color: #57C1AF !important;
+    opacity: 1 !important;
+}
 
 td:first-child span {
     -webkit-touch-callout: none;

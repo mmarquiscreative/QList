@@ -51,29 +51,36 @@ var UIController = (function() {
     var DOMstrings = {
         queueContainer: '#queueContainer',
         inputFields: '.inputField'
-    }
+    };
     
-    return {
-        addListItem: function(obj){
-            
-            var html, newHtml, element;
-            
-            html = '<tr id="%%task%%" class="%%status%%"><td><span class="glyphicon glyphicon-option-vertical"></span></td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td><span class = "glyphicon glyphicon-ok-circle"></span></td></tr>';
-            
-            element = DOMstrings.queueContainer;
-            
-            newHtml = html.replace('%%task%%', 'task__' + obj.num);
-            newHtml = newHtml.replace('%%num%%', obj.num);
-            newHtml = newHtml.replace('%%jobType%%', obj.type);
-            newHtml = newHtml.replace('%%member%%', obj.memb);
-            newHtml = newHtml.replace('%%taskName%%', obj.task);
-            newHtml = newHtml.replace('%%status%%', obj.status);
-            newHtml = newHtml.replace('%%status%%', obj.status);
-            newHtml = newHtml.replace('%%date%%', obj.due);
-            
-            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
-        },
-        
+        return {
+            addListItem: function(obj){
+
+                var html, newHtml, element;
+                 
+               
+                html = '<tr id="%%task%%" class="%%status%%"><td><span class="glyphicon glyphicon-option-vertical"></span></td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td><span class = "glyphicon glyphicon-ok-circle"></span></td></tr>';
+
+                element = DOMstrings.queueContainer;
+
+                newHtml = html.replace('%%task%%', 'task__' + obj.num);
+                newHtml = newHtml.replace('%%num%%', obj.num);
+                newHtml = newHtml.replace('%%jobType%%', obj.type);
+                newHtml = newHtml.replace('%%member%%', obj.memb);
+                newHtml = newHtml.replace('%%taskName%%', obj.task);
+                newHtml = newHtml.replace('%%status%%', obj.status);
+                newHtml = newHtml.replace('%%status%%', obj.status);
+                newHtml = newHtml.replace('%%date%%', obj.due);
+
+               if (obj.status === 'HOT' || obj.status === "RUSH"){
+                   document.querySelector(element).insertAdjacentHTML('afterbegin', newHtml);
+               } else if (obj.status === 'Normal'){
+                   document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+                    } else {
+                        alert('No such status. Please select a status of Normal, HOT, or RUSH.')
+                    }
+            },
+
         clearFields: function() {
             var fields, fieldsArr;
             console.log('running clearFields');
@@ -100,13 +107,13 @@ var AppController = (function(qCtrl, UICtrl) {
         UICtrl.addListItem(newItem);
         
         // re-run drag and drop to include new list
-        dragndrop();
+        dragndrop(newItem);
         
         // reset fields
         UICtrl.clearFields();
     }
     
-    function dragndrop() {
+function dragndrop(obj) {
     function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -126,7 +133,7 @@ $(document).ready(function() {
 	
 	// Initialise the second table specifying a dragClass and an onDrop function that will display an alert
 	$("#queueList1").tableDnD({
-		onDragClass: "drag",
+		onDragClass: 'drag',
 		onDrop: function(table, row) {
 			var rows = table.tBodies[0].rows;
 			var debugStr = "Row dropped was "+row.id+". New order: ";
