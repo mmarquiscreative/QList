@@ -132,9 +132,10 @@
                         <td>%%taksName%%</td>
                         <td>%%status%%</td>
                         <td>%%date%%</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td><span id="%%num%%__complete" class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr>
                     -->
+
                     <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
@@ -143,7 +144,7 @@
                         <td>Minor Member Changes</td>
                         <td>---</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class="complete"><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr>
                     <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
@@ -153,7 +154,7 @@
                         <td>Minor Member Changes</td>
                         <td>---</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class='complete'><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr> <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
@@ -162,7 +163,7 @@
                         <td>Minor Member Changes</td>
                         <td>---</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class="complete"><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr> <tr id="%%task%%" class="Normal">
                         <td><span class="glyphicon glyphicon-option-vertical"></span></td>
                         <td>12345</td>
@@ -171,7 +172,7 @@
                         <td>Minor Member Changes</td>
                         <td>---</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class="complete"><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr> <tr id="%%task%%" class="RUSH">
                         <td><strong>RUSH</strong></td>
                         <td>12345</td>
@@ -180,7 +181,7 @@
                         <td>Minor Member Changes</td>
                         <td>RUSH</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class="complete"><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr> <tr class="HOT" >
                         <td><strong>HOT</strong></td>
                         <td>12345</td>
@@ -189,7 +190,7 @@
                         <td>Minor Member Changes</td>
                         <td>HOT</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class="complete"><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr> <tr class="completed">
                         <td ><span class="glyphicon glyphicon-option-vertical unselectable"></span></td>
                         <td>12345</td>
@@ -198,16 +199,25 @@
                         <td>Minor Member Changes</td>
                         <td>---</td>
                         <td>02/21/2017</td>
-                        <td><span class = "glyphicon glyphicon-ok-circle"></span></td>
+                        <td class="complete"><span class = "glyphicon glyphicon-ok-circle"></span></td>
                     </tr>
+
                    </tbody>
                 
             </table>
              
         </div>
+        <div class="container-fluid">
+            <div class="row">
+            <div class=" col-sm-1">
+                <button type="button" id="reset" class="btn btn-outline-primary"> Reset </button>
+            </div>
+            </div></div>
         <script src="app.js"></script>
          <script>
-
+$(".btn").mouseup(function(){
+    $(this).blur();
+})
 </script>
         
 <script>

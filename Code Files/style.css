@@ -61,15 +61,21 @@ outline: none;
 #taskNumValue {
     min-width:50px;
 }
-.submitEntry {
-    border-radius: 100%;
-    color: #Fff;
+.btn {
+    border-radius: 50px;
+    color: #fff;
     background-color: #faa35a;
     border: solid 2px #faa35a;
-    margin-top: 30px;
+}
+.submitEntry{
+        margin-top: 30px;
+
+}
+.btn:hover, .btn:focus, btn:active {
+    color: #a3693a;
 }
 
- .submitEntry:focus {
+ .btn:focus {
     outline: none !important;
 }
 
@@ -110,6 +116,7 @@ outline: none;
 
 .table tr{
     border-radius: 50px;
+    padding-top: 3px;
     margin-top:1px;
     outline: solid 0px #fff !important;
     font-size: 14px;
@@ -121,7 +128,7 @@ outline: none;
     box-shadow: inset 0px 0px 0px 1px #FAAE5A;
 }
 .table tr.Normal td, .table tr.HOT td, .table tr.RUSH td, .table tr.completed td {
-    padding: 15px;
+    padding: 20px;
     z-index: 1 ;
     position: relative;
     
@@ -129,6 +136,15 @@ outline: none;
 
 .table td {
   border: solid 0px #fff !important; 
+}
+
+.table td:first-child, .table td:last-child {
+    line-height: 1em;
+    font-size: 20px;
+}
+
+.table td:last-child {
+     text-align: right;
 }
 
 tr td:nth-child(2){
@@ -149,7 +165,7 @@ tr td:nth-child(2){
 }
 
 tr.Normal:hover td:first-child, tr.Normal:hover td:last-child{
-    opacity:  .6 !important;
+    opacity:  .4 !important;
 }
 tr.Normal td:first-child:hover, tr.Normal td:last-child:hover{
     opacity:  1 !important;
@@ -184,15 +200,16 @@ tr.HOT:hover {
     box-shadow: inset 0px 0px 0px 1px #F16354;
 }
 
-tr.HOT td:last-child {
+/* end icons transparency on hover*/
+tr.HOT td:last-child, tr.HOT td:first-child {
     opacity: 0;
 }
 
-tr.HOT td:last-child {
-    color: #F16354;
+tr.HOT:hover td:first-child, tr.HOT:hover td:last-child {
+    opacity: .3;
 }
 
-tr.HOT:hover td:first-child, tr.HOT:hover td:last-child {
+tr.HOT td:first-child:hover, tr.HOT td:last-child:hover {
     opacity: 1;
 }
 
@@ -218,15 +235,20 @@ tr.RUSH:hover {
     box-shadow: inset 0px 0px 0px 1px  #0093D2;
 }
 
-tr.RUSH td:last-child {
+/* end icons transparency on hover*/
+tr.RUSH td:last-child, tr.RUSH td:first-child {
     opacity: 0;
 }
 
- tr.RUSH:hover td:last-child {
+tr.RUSH:hover td:first-child, tr.RUSH:hover td:last-child {
+    opacity: .3;
+}
+
+tr.RUSH td:first-child:hover, tr.RUSH td:last-child:hover {
     opacity: 1;
 }
 
-tr.RUSH td, tr.RUSH td:first-child, tr.RUSH:last-child {
+tr.RUSH td, .table tr.RUSH td:first-child, tr.RUSH:last-child {
     color: #0093D2;
 }
 
@@ -239,6 +261,15 @@ tr.RUSH:active {
 tr.RUSH:active td, tr.RUSH:active td:first-child, tr.RUSH:active td:last-child {
     color: #fff;
     background-color: #57C1AF;
+}
+
+tr.RUSH td:first-child:hover, 
+tr.HOT td:first-child:hover, tr.Normal td:first-child:hover {
+    cursor: move !important;
+}
+
+tr:hover {
+    cursor: initial !important;
 }
 
 /* Completed */

@@ -15,6 +15,12 @@ var queueController = (function() {
         task: '#taskNameValue',
         status: '#statusValue',
         due: "#datepicker"
+    };
+    
+    var statValueOptions = {
+        normal: 'Normal',
+        hot: 'HOT',
+        rush: 'RUSH'
     }
     
     var queue = {
@@ -22,6 +28,8 @@ var queueController = (function() {
     }
     
     return {
+        inputValues: inputValues,
+        statValueOptions: statValueOptions,
         queueObj: queue,
         // 1. Get input from fields
         getInput: function(){
@@ -49,25 +57,37 @@ var queueController = (function() {
 
 var UIController = (function() {
     var DOMstrings = {
+        submitEntry: '.submitEntry',
+        resetBtn: '#reset',
         queueContainer: '#queueContainer',
-        inputFields: '.inputField'
+        inputFields: '.inputField',
+        completeTd: 'complete'
     };
     
+    function setVal(target, value){
+            document.querySelector(target).value = value;
+    };
         return {
+            DOMstrings: DOMstrings,
             addListItem: function(obj){
 
                 var html, newHtml, element;
                  
                
-                html = '<tr id="%%task%%" class="%%status%%"><td><span class="glyphicon glyphicon-option-vertical"></span></td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td><span class = "glyphicon glyphicon-ok-circle"></span></td></tr>';
+                html = '<tr id="%%task%%" class="%%status%%"><td>&#9776</td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td class="complete">&#10005</td></tr>';
 
                 element = DOMstrings.queueContainer;
 
                 newHtml = html.replace('%%task%%', 'task__' + obj.num);
+                
+                // run the below num replace twice for both places in html
+                newHtml = newHtml.replace('%%num%%', obj.num);
                 newHtml = newHtml.replace('%%num%%', obj.num);
                 newHtml = newHtml.replace('%%jobType%%', obj.type);
                 newHtml = newHtml.replace('%%member%%', obj.memb);
                 newHtml = newHtml.replace('%%taskName%%', obj.task);
+                
+                // run the below status replace twice for both places in html
                 newHtml = newHtml.replace('%%status%%', obj.status);
                 newHtml = newHtml.replace('%%status%%', obj.status);
                 newHtml = newHtml.replace('%%date%%', obj.due);
@@ -80,8 +100,12 @@ var UIController = (function() {
                         alert('No such status. Please select a status of Normal, HOT, or RUSH.')
                     }
             },
+            
+        setVal: setVal,
 
-        clearFields: function() {
+        clearFields: function(obj, target, value) {
+            console.log(obj);
+            if (obj.status === 'HOT' || obj.status === 'RUSH' || obj.status === 'Normal'){
             var fields, fieldsArr;
             console.log('running clearFields');
             console.log(document.querySelectorAll(DOMstrings.inputFields));
@@ -91,9 +115,17 @@ var UIController = (function() {
             fieldsArr.forEach(function(current, index, array){
                 current.value = "";
             });
-                        console.log(fieldsArr);
+                setVal(target, value);
+            } else {
+                console.log('did not finish clearFields: status not correct');
+            }
 
-        }
+        },
+        
+        setDisabledBtn: function(btnID, boolVal){
+           document.querySelector(btnID).disabled = boolVal;
+        },
+        
         
     }
 })();
@@ -110,8 +142,49 @@ var AppController = (function(qCtrl, UICtrl) {
         dragndrop(newItem);
         
         // reset fields
-        UICtrl.clearFields();
+        UICtrl.clearFields(newItem, qCtrl.inputValues.status, qCtrl.statValueOptions.normal);
+        
+        // remove disabled from reset button if a new task has been added
+        if (newItem.status === 'HOT' || newItem.status === 'RUSH' || newItem.status === 'Normal'){
+            UICtrl.setDisabledBtn(UICtrl.DOMstrings.resetBtn, false);
+        }
+        
+        refreshListeners();
+    };
+    
+    function removeQItem(){
+                console.log('running removeQItem');
+                this.parentNode.outerHTML='';
     }
+    
+    function resetQueue() {
+        console.log('started reset queue')
+        document.querySelector(UICtrl.DOMstrings.queueContainer).innerHTML="";
+        
+        UICtrl.setDisabledBtn(UICtrl.DOMstrings.resetBtn, true);
+    };
+    
+    function addListenerToAllClass(className){
+        var classArray;
+        classArray = document.getElementsByClassName(className);
+                console.log(classArray);
+
+        for (var i = 0; i < classArray.length; i++){
+            classArray[i].addEventListener('click', removeQItem);
+        };
+    };
+    
+    function refreshListeners(){
+        setEventListeners();
+    }
+    
+    function setEventListeners() {
+         document.querySelector(UICtrl.DOMstrings.submitEntry).addEventListener('click', addNewItem);
+        document.querySelector(UICtrl.DOMstrings.resetBtn).addEventListener('click', resetQueue);
+        
+        addListenerToAllClass(UICtrl.DOMstrings.completeTd);
+    };
+    
     
 function dragndrop(obj) {
     function allowDrop(ev) {
@@ -150,20 +223,10 @@ $(document).ready(function() {
 });}
     return {
     init: function(){
-        
-        document.querySelector('.submitEntry').addEventListener('click', addNewItem);
+        setEventListeners();
         dragndrop();
-    //// addItem function
+        UICtrl.setVal(qCtrl.inputValues.status, qCtrl.statValueOptions.normal);
         
-        // getInput
-        
-        // create object
-        
-        // add object to array
-        
-        // create new table row UICtrl
-        
-        // populate table row with object values
         
         
     }}
