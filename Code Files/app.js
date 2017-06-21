@@ -61,7 +61,14 @@ var UIController = (function() {
         resetBtn: '#reset',
         queueContainer: '#queueContainer',
         inputFields: '.inputField',
-        completeTd: 'complete'
+        completeTd: 'complete',
+        copyTd: 'copy',
+        tempTaskNumID: "#tempTaskNum",
+        taskNumTd: 'taskNum'
+    };
+    
+     var TDInputStrings = {
+        taskNumInput: '<td class="taskNum"><input id="tempTaskNum" inputField" type="tel" size="5" maxLength="5" name="taskNum"  placeholder="-----"/></td>'
     };
     
     function setVal(target, value){
@@ -69,12 +76,13 @@ var UIController = (function() {
     };
         return {
             DOMstrings: DOMstrings,
+            TDInputStrings: TDInputStrings,
             addListItem: function(obj){
 
                 var html, newHtml, element;
                  
                
-                html = '<tr id="%%task%%" class="%%status%%"><td>&#9776</td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td class="complete">&#10005</td></tr>';
+                html = '<tr id="%%task%%" class="%%status%%"><td class="dragHandle">&#9776</td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td class="endIcons"><span class="copy">&#10064</span> <span class="complete">&#10005</span></td></tr>';
 
                 element = DOMstrings.queueContainer;
 
@@ -154,8 +162,75 @@ var AppController = (function(qCtrl, UICtrl) {
     
     function removeQItem(){
                 console.log('running removeQItem');
-                this.parentNode.outerHTML='';
+                this.parentNode.parentNode.outerHTML='';
     }
+    
+    function copyQItem(){
+            var currentHTML, newHTML;
+        console.log('running copyQItem');           
+        currentHTML = this.parentNode.parentNode.outerHTML;
+        this.parentNode.parentNode.outerHTML = currentHTML + currentHTML;
+        dragndrop();
+        setEventListeners();
+
+    }
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    // %% Under Construction %%
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    
+    
+    function editValue(){
+        var initHTML, tempHTML,switchResult, newValue, element, tempClassName;        
+        console.log('started editValue for ' + this.outerHTML);
+                element = this;
+                
+                initHTML = this.outerHTML;
+                switch (this.className){
+                    case 'taskNum':
+                    console.log('taskNum it is!');
+                    switchResult = UIController.TDInputStrings.taskNumInput;
+                    tempClassName = '#tempTaskNum';
+                    break;
+                    default:
+                    console.log('could not find a match for this.className');
+                };
+                this.outerHTML = switchResult;
+                document.querySelector(UICtrl.DOMstrings.tempTaskNumID).addEventListener('keypress', function(e){
+                    var key = e.which || e.keyCode;
+                    if (key === 13){
+                        console.log(this.value);
+                        newValue = this.value;
+                        console.log(newValue);
+                        var elementClassCall = ('".' + element.className + '"');
+                        console.log(document.querySelector(tempClassName).outerHTML);
+                        document.querySelector(tempClassName).outerHTML = initHTML;
+                        console.log(document.querySelector(elementClassCall).value);
+                        document.querySelector(elementClassCall).value = newValue; 
+                                                console.log(element.textContent);
+
+                   
+                    };
+                });
+    };
+        /*this.textContent = newValue;
+        console.log(newValue);  */ 
+                    
+                   
+             
+        
+        
+        
+    
+    
+    
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    
     
     function resetQueue() {
         console.log('started reset queue')
@@ -164,13 +239,12 @@ var AppController = (function(qCtrl, UICtrl) {
         UICtrl.setDisabledBtn(UICtrl.DOMstrings.resetBtn, true);
     };
     
-    function addListenerToAllClass(className){
+    function addListenerToAllClass(className, classFunction){
         var classArray;
         classArray = document.getElementsByClassName(className);
-                console.log(classArray);
 
         for (var i = 0; i < classArray.length; i++){
-            classArray[i].addEventListener('click', removeQItem);
+            classArray[i].addEventListener('click', classFunction);
         };
     };
     
@@ -182,7 +256,9 @@ var AppController = (function(qCtrl, UICtrl) {
          document.querySelector(UICtrl.DOMstrings.submitEntry).addEventListener('click', addNewItem);
         document.querySelector(UICtrl.DOMstrings.resetBtn).addEventListener('click', resetQueue);
         
-        addListenerToAllClass(UICtrl.DOMstrings.completeTd);
+        addListenerToAllClass(UICtrl.DOMstrings.completeTd, removeQItem);
+        addListenerToAllClass(UICtrl.DOMstrings.copyTd, copyQItem);
+        addListenerToAllClass(UICtrl.DOMstrings.taskNumTd, editValue);
     };
     
     
