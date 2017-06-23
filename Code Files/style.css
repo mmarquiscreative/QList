@@ -52,6 +52,21 @@ outline: none;
 }
 
 
+
+.taskNumTD, .jobTypeTD, .memberNameTD, .taskNameTD, .statusTD, .dueDateTD {
+    text-align: center !important;
+}
+
+.tempTextInput {
+    border-radius: 0px !important;
+    margin: -5px;
+    text-align: center !important;
+}
+
+.tempTextInput:focus {
+      border: solid 2px #faa35a;
+
+}
 .numEntry, .typeEntry, .memberEntry, .taskEntry, .dateEntry, .statusEntry {
     display: inline-block;
     margin-top: 10px;

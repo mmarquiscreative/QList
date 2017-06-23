@@ -56,6 +56,7 @@ var queueController = (function() {
 })();
 
 var UIController = (function() {
+    var currentValue;
     var DOMstrings = {
         submitEntry: '.submitEntry',
         resetBtn: '#reset',
@@ -64,26 +65,86 @@ var UIController = (function() {
         completeTd: 'complete',
         copyTd: 'copy',
         tempTaskNumID: "#tempTaskNum",
-        taskNumTd: 'taskNum'
+        tempJobTypeID: "#tempJobType",
+        tempMemberNameID: "#tempMemberName",
+        tempTaskNameID: "#tempTaskName",
+        tempStatusID: "#tempStatus",
+        tempDueDateID: "#tempDueDate",
+        taskNumTd: 'taskNumTD',
+        jobTypeTd: 'jobTypeTD',
+        memberNameTd: 'memberNameTD',
+        taskNameTd: 'taskNameTD',
+        statusTd: 'statusTD',
+        dueDateTd: 'dueDateTD'       
     };
     
-     var TDInputStrings = {
-        taskNumInput: '<td class="taskNum"><input id="tempTaskNum" inputField" type="tel" size="5" maxLength="5" name="taskNum"  placeholder="-----"/></td>'
+    var TDInputStrings = {
+        taskNumInput: ['<td class="taskNum"><input class="tempTextInput" id="tempTaskNum" inputField" type="tel" size="5" maxLength="5" name="taskNum"  value="', '"/></td>'],
+        jobTypeInput: ['<td class="jobTypeTD"><input class="tempTextInput" id="tempJobType" inputField" type="text" value="', '"/></td>'],
+        memberNameInput: ['<td class="memberNameTD"><input class="tempTextInput" id="tempMemberName" inputField" type="text" value="', '"/></td>'],
+        taskNameInput: ['<td class="taskNameTD"><input class="tempTextInput" id="tempTaskName" inputField" type="text" value="', '"/></td>'],
+        statusInput: ['<td class="statusTD"><input class="tempTextInput" id="tempStatus" inputField" type="text" value="', '"/></td>'],
+        dueDateInput: ['<td class="dueDateTD"><input class="tempTextInput" id="tempDueDate" inputField" type="text" value="', '"/></td>']
     };
     
+    var copyCounter = {
+        // row id: an array;
+    }
+    
+    var tdObjects = {
+        taskNumObj: {
+            TDInput1: TDInputStrings.taskNumInput[0],
+            TDInput2: TDInputStrings.taskNumInput[1],
+            tempElementID: DOMstrings.tempTaskNumID,
+            elementID: DOMstrings.taskNumTd,
+            childNodeSlot: 1},
+        jobTypeObj: {
+            TDInput1: TDInputStrings.jobTypeInput[0],
+            TDInput2: TDInputStrings.jobTypeInput[1],
+            tempElementID: DOMstrings.tempJobTypeID,
+            elementID: DOMstrings.jobTypeTd,
+            childNodeSlot: 2},
+    memberNameObj: {
+            TDInput1: TDInputStrings.memberNameInput[0],
+            TDInput2: TDInputStrings.memberNameInput[1],
+            tempElementID: DOMstrings.tempMemberNameID,
+            elementID: DOMstrings.memberNameTd,
+            childNodeSlot: 3},
+    taskNameObj: {
+            TDInput1: TDInputStrings.taskNameInput[0],
+            TDInput2: TDInputStrings.taskNameInput[1],
+            tempElementID: DOMstrings.tempTaskNameID,
+            elementID: DOMstrings.taskNameTd,
+            childNodeSlot: 4},
+    statusObj: {
+            TDInput1: TDInputStrings.statusInput[0],
+            TDInput2: TDInputStrings.statusInput[1],
+            tempElementID: DOMstrings.tempStatusID,
+            elementID: DOMstrings.statusTd,
+            childNodeSlot: 5},
+    dueDateObj: {
+            TDInput1: TDInputStrings.dueDateInput[0],
+            TDInput2: TDInputStrings.dueDateInput[1],
+            tempElementID: DOMstrings.tempDueDateID,
+            elementID: DOMstrings.dueDateTd,
+            childNodeSlot: 6}
+    }
+     
     function setVal(target, value){
             document.querySelector(target).value = value;
     };
         return {
             DOMstrings: DOMstrings,
             TDInputStrings: TDInputStrings,
+            tdObjects: tdObjects,
+            copyCounter: copyCounter,
             addListItem: function(obj){
 
                 var html, newHtml, element;
                  
                
-                html = '<tr id="%%task%%" class="%%status%%"><td class="dragHandle">&#9776</td><td>%%num%%</td><td>%%jobType%%</td><td>%%member%%</td><td>%%taskName%%</td><td>%%status%%</td><td>%%date%%</td><td class="endIcons"><span class="copy">&#10064</span> <span class="complete">&#10005</span></td></tr>';
-
+                html = '<tr id="%%task%%" class="%%status%%"><td class="dragHandle">&#9776</td><td class="taskNumTD">%%num%%</td><td class="jobTypeTD">%%jobType%%</td><td class="memberNameTD">%%member%%</td><td class="taskNameTD">%%taskName%%</td><td class="statusTD">%%status%%</td><td class="dueDateTD">%%date%%</td><td class="endIcons"><span class="copy">&#10064</span> <span class="complete">&#10005</span></td></tr>';
+                
                 element = DOMstrings.queueContainer;
 
                 newHtml = html.replace('%%task%%', 'task__' + obj.num);
@@ -132,7 +193,7 @@ var UIController = (function() {
         
         setDisabledBtn: function(btnID, boolVal){
            document.querySelector(btnID).disabled = boolVal;
-        },
+        }
         
         
     }
@@ -165,17 +226,8 @@ var AppController = (function(qCtrl, UICtrl) {
                 this.parentNode.parentNode.outerHTML='';
     }
     
-    function copyQItem(){
-            var currentHTML, newHTML;
-        console.log('running copyQItem');           
-        currentHTML = this.parentNode.parentNode.outerHTML;
-        this.parentNode.parentNode.outerHTML = currentHTML + currentHTML;
-        dragndrop();
-        setEventListeners();
-
-    }
     //////////////////////////////////////////////
-    //////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////
     // %% Under Construction %%
     //////////////////////////////////////////////
@@ -183,53 +235,135 @@ var AppController = (function(qCtrl, UICtrl) {
     //////////////////////////////////////////////
     
     
+    
+    function copyQItem(){
+            var currentRow, currentRowId, rowIdName, originalRow, originalHtml, originalId, newHtml, currentHTML, newHTML, newID, copyCounterName, totalHtml;
+        console.log('running copyQItem');
+        currentRow = this.parentNode.parentNode;
+        currentRowId = currentRow.id;
+        rowIdName = currentRowId.split('__');
+        
+        console.log();
+        
+        if (!(UICtrl.copyCounter[rowIdName[1]] > 0)) {
+        UICtrl.copyCounter[rowIdName[1]] = 1;
+            
+        currentRow.id = currentRow.id;
+        originalHtml = currentRow.outerHTML;
+        console.log(originalHtml);
+        
+        currentRow.id = currentRow.id + '__' + UICtrl.copyCounter[rowIdName[1]].toString();
+        newHtml = currentRow.outerHTML;
+        console.log(newHtml);
+        
+        totalHtml = newHtml + originalHtml;
+            
+        currentRow.outerHTML = totalHtml;
+        console.log(totalHtml);
+            
+        } else if (UICtrl.copyCounter[rowIdName[1]] >= 0){
+            console.log('copyQItem else if started');
+            console.log(rowIdName);
+            console.log(rowIdName[2]);
+            UICtrl.copyCounter[rowIdName[1]] = (parseInt(rowIdName[2]) + 1);
+            console.log(UICtrl.copyCounter[rowIdName[1]]);
+            
+            currentRow.id = currentRow.id;
+            originalHtml = currentRow.outerHTML;
+            console.log(originalHtml);
+        
+            currentRow.id = rowIdName[0] + '__' + rowIdName[1] + '__' + UICtrl.copyCounter[rowIdName[1]];
+            newHtml = currentRow.outerHTML;
+            console.log(newHtml);
+        
+            totalHtml = newHtml + originalHtml;
+            
+            currentRow.outerHTML = totalHtml;
+            console.log(totalHtml);
+            
+        } else {
+            console.log('adding copy id did not work. current id is ' + currentRow.id)
+            
+        console.log(UICtrl.copyCounter[rowIdName[1]]);
+        };
+        console.log(currentRow.id);
+        dragndrop();
+        setEventListeners();
+    }
+
+    
+    
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////
+    
+    
+    
     function editValue(){
-        var initHTML, tempHTML,switchResult, newValue, element, tempClassName;        
-        console.log('started editValue for ' + this.outerHTML);
-                element = this;
-                
-                initHTML = this.outerHTML;
-                switch (this.className){
-                    case 'taskNum':
+        var rowID, initHTML, switchResult, newValue; 
+        
+        // get ID of row
+        currentValue = this.textContent;
+        rowID = "#" + this.parentNode.id;
+        
+        // save current element HTML
+        initHTML = this.outerHTML;
+        
+        // return the right tdObject for the td clicked on
+        switch (this.className){
+                case UICtrl.DOMstrings.taskNumTd:
                     console.log('taskNum it is!');
-                    switchResult = UIController.TDInputStrings.taskNumInput;
-                    tempClassName = '#tempTaskNum';
+                    switchResult = UICtrl.tdObjects.taskNumObj;
                     break;
-                    default:
+                case UICtrl.DOMstrings.jobTypeTd:
+                    console.log('jobType it is!');
+                    switchResult = UICtrl.tdObjects.jobTypeObj;
+                    break;
+                case UICtrl.DOMstrings.memberNameTd:
+                    console.log('memberName it is!');
+                    switchResult = UICtrl.tdObjects.memberNameObj;
+                    break;
+                case UICtrl.DOMstrings.taskNameTd:
+                    console.log('taskName it is!');
+                    switchResult = UICtrl.tdObjects.taskNameObj;
+                    break;
+                case UICtrl.DOMstrings.statusTd:
+                    console.log('status it is!');
+                    switchResult = UICtrl.tdObjects.statusObj;
+                    break;
+                case UICtrl.DOMstrings.dueDateTd:
+                    console.log('dueDate it is!');
+                    switchResult = UICtrl.tdObjects.dueDateObj;
+                    break;
+                default:
                     console.log('could not find a match for this.className');
                 };
-                this.outerHTML = switchResult;
-                document.querySelector(UICtrl.DOMstrings.tempTaskNumID).addEventListener('keypress', function(e){
+        
+        // change the td's HTML to the matching input HTML saved in the tdObject
+         this.outerHTML = switchResult.TDInput1 + currentValue + switchResult.TDInput2;
+       // add an event listener for the enter key
+        document.querySelector(switchResult.tempElementID).addEventListener('keypress', function(e){
                     var key = e.which || e.keyCode;
-                    if (key === 13){
-                        console.log(this.value);
-                        newValue = this.value;
-                        console.log(newValue);
-                        var elementClassCall = ('".' + element.className + '"');
-                        console.log(document.querySelector(tempClassName).outerHTML);
-                        document.querySelector(tempClassName).outerHTML = initHTML;
-                        console.log(document.querySelector(elementClassCall).value);
-                        document.querySelector(elementClassCall).value = newValue; 
-                                                console.log(element.textContent);
-
-                   
+            
+            // if enter is pressed
+            if (key === 13){
+                    
+                // save input from text field
+                var newValue = this.value;
+                    console.log(newValue);
+                // return td to initial HTML
+                this.parentNode.outerHTML = initHTML;         
+                console.log(initHTML);
+               // update the td.textContent with new value
+                document.querySelector(rowID).childNodes[switchResult.childNodeSlot].textContent = newValue;
+                    refreshListeners();
                     };
                 });
+    
     };
-        /*this.textContent = newValue;
-        console.log(newValue);  */ 
-                    
-                   
-             
-        
-        
         
     
-    
-    
-    //////////////////////////////////////////////
-    //////////////////////////////////////////////
-    //////////////////////////////////////////////
+
     
     
     function resetQueue() {
@@ -259,6 +393,11 @@ var AppController = (function(qCtrl, UICtrl) {
         addListenerToAllClass(UICtrl.DOMstrings.completeTd, removeQItem);
         addListenerToAllClass(UICtrl.DOMstrings.copyTd, copyQItem);
         addListenerToAllClass(UICtrl.DOMstrings.taskNumTd, editValue);
+        addListenerToAllClass(UICtrl.DOMstrings.jobTypeTd, editValue);
+        addListenerToAllClass(UICtrl.DOMstrings.memberNameTd, editValue);
+        addListenerToAllClass(UICtrl.DOMstrings.taskNameTd, editValue);
+        addListenerToAllClass(UICtrl.DOMstrings.statusTd, editValue);
+        addListenerToAllClass(UICtrl.DOMstrings.dueDateTd, editValue);
     };
     
     
