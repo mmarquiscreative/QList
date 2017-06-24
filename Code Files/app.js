@@ -75,7 +75,10 @@ var UIController = (function() {
         memberNameTd: 'memberNameTD',
         taskNameTd: 'taskNameTD',
         statusTd: 'statusTD',
-        dueDateTd: 'dueDateTD'       
+        dueDateTd: 'dueDateTD', 
+        alertBox: '.alertBox',
+        alertBoxTxt: '#alertBoxTxt',
+        hiddenClass: 'hidden'
     };
     
     var TDInputStrings = {
@@ -133,7 +136,19 @@ var UIController = (function() {
     function setVal(target, value){
             document.querySelector(target).value = value;
     };
+    
+    function toggleHidden(target){
+        console.log(document.querySelector(target).classList);
+document.querySelector(target).classList.toggle(DOMstrings.hiddenClass);
+    }
+    
+    function queueAlert(alertTxt){
+    document.querySelector(DOMstrings.alertBoxTxt).innerHTML = alertTxt;
+        toggleHidden(DOMstrings.alertBox);
+    }
+    
         return {
+            queueAlert: queueAlert,
             DOMstrings: DOMstrings,
             TDInputStrings: TDInputStrings,
             tdObjects: tdObjects,
@@ -364,7 +379,25 @@ var AppController = (function(qCtrl, UICtrl) {
         
     
 
-    
+    function checkForDuplicates(className, taskID){
+        var idArray, newArray, searchFor, count;
+        idArray = document.querySelectorAll(className);
+                console.log(idArray);
+        
+        newArray = idArray.map(function(){
+           return this.textContent();
+        });
+        
+        console.log(newArray);
+        
+        searchFor = taskID;
+        console.log(taskID);
+        
+        count = newArray.reduce(function(n, val) {
+            return n + (val === searchFor);
+            }, 0);
+        console.log(count);
+    }
     
     function resetQueue() {
         console.log('started reset queue')
@@ -437,6 +470,8 @@ $(document).ready(function() {
 	});
 });}
     return {
+        checkForDuplicates: checkForDuplicates,
+        
     init: function(){
         setEventListeners();
         dragndrop();
