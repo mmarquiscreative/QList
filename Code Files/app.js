@@ -234,11 +234,52 @@ var AppController = (function(qCtrl, UICtrl) {
         }
         
         refreshListeners();
+        
+        // check for duplicates
+        checkForDuplicates(newItem.num)
     };
+    
+    /* var obj = {
+            "results": [
+              {
+                  "id": "460",
+                  "name": "Widget 1",
+                  "loc": "Shed"
+              }, {
+                  "id": "461",
+                  "name": "Widget 2",
+                  "loc": "Kitchen"
+              }, {
+                  "id": "462",
+                  "name": "Widget 3",
+                  "loc": "bath"
+              }
+            ]
+            };
+
+
+        function removeFunction (myObjects,prop,valu)
+        {
+             return myObjects.filter(function (val) {
+              return val[prop] !== valu;
+          });
+
+        }
+        
+    function removeFromArray (myObjects,prop,valu)
+        {
+             return myObjects.filter(function (val) {
+              return val[prop] !== valu;
+          });
+
+        }
+*/
     
     function removeQItem(){
                 console.log('running removeQItem');
                 this.parentNode.parentNode.outerHTML='';
+                checkForDuplicates(qCtrl.queueObj.list[0].num);
+                removeFromArray (qCtrl.queueObj.list, 'num', this.parentNode.parentNode.id);
     }
     
     //////////////////////////////////////////////
@@ -379,24 +420,36 @@ var AppController = (function(qCtrl, UICtrl) {
         
     
 
-    function checkForDuplicates(className, taskID){
-        var idArray, newArray, searchFor, count;
-        idArray = document.querySelectorAll(className);
-                console.log(idArray);
-        
-        newArray = idArray.map(function(){
-           return this.textContent();
+    function checkForDuplicates(inputObjNum){
+        // check inputObj.num against all other inputObj.num in the queue list
+        var counter, counterList;
+        counter = 0;
+        counterList = 0;
+
+        qCtrl.queueObj.list.forEach(function(cur){
+
+            if (inputObjNum === cur.num) {
+               if (counter < 1){
+                    counter++;
+                    counterList++;
+                    console.log('duplicate detected: counter = ' + counter);
+                    console.log('duplicate detected: counterList = ' + counterList);
+
+               } else if (counter >= 1){
+                   console.log('duplicate detected: adding class ');
+                   counterList++;
+                   document.querySelector(UICtrl.DOMstrings.alertBox).classList.remove(UICtrl.DOMstrings.hiddenClass);
+                    counter = 0
+
+               }
+            } else {
+                console.log('no duplicates detected');
+                
+            };
         });
-        
-        console.log(newArray);
-        
-        searchFor = taskID;
-        console.log(taskID);
-        
-        count = newArray.reduce(function(n, val) {
-            return n + (val === searchFor);
-            }, 0);
-        console.log(count);
+            if (counterList < 1){
+                document.querySelector(UICtrl.DOMstrings.alertBox).classList.add(UICtrl.DOMstrings.hiddenClass);
+            };
     }
     
     function resetQueue() {
@@ -404,6 +457,7 @@ var AppController = (function(qCtrl, UICtrl) {
         document.querySelector(UICtrl.DOMstrings.queueContainer).innerHTML="";
         
         UICtrl.setDisabledBtn(UICtrl.DOMstrings.resetBtn, true);
+        document.querySelector(UICtrl.DOMstrings.alertBox).classList.add(UICtrl.DOMstrings.hiddenClass);
     };
     
     function addListenerToAllClass(className, classFunction){
